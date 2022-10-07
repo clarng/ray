@@ -658,11 +658,15 @@ void CoreWorkerDirectTaskSubmitter::HandleGetTaskFailureCause(
     error_info->set_error_message(buffer.str());
     error_info->set_error_type(rpc::ErrorType::NODE_DIED);
   }
+  if (is_actor) {
+    task_error_type = rpc::ErrorType::ACTOR_DIED;
+  }
   RAY_UNUSED(task_finisher_->FailOrRetryPendingTask(
-      task_id,
-      is_actor ? rpc::ErrorType::ACTOR_DIED : task_error_type,
-      &task_execution_status,
-      error_info.get()));
+      task_id, task_error_type, &task_execution_status, error_info.get()));
+  std::string metric_name = "TaskFailure.";
+  metric_name.append(std::to_string(task_error_type));
+  metric_name.append(".Total");
+  ray::stats::STATS_task_failure_error_type_total.Record(1, metric_name);
 }
 
 Status CoreWorkerDirectTaskSubmitter::CancelTask(TaskSpecification task_spec,

@@ -108,6 +108,9 @@ DECLARE_stats(gcs_actors_count);
 /// Memory Manager
 DECLARE_stats(memory_manager_worker_eviction_total);
 
+/// Task manager
+DECLARE_stats(task_failure_error_type_total);
+
 /// The below items are legacy implementation of metrics.
 /// TODO(sang): Use DEFINE_stats instead.
 

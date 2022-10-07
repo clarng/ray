@@ -268,6 +268,13 @@ DEFINE_stats(memory_manager_worker_eviction_total,
              ("Type"),
              (),
              ray::stats::COUNT);
+
+/// Task manager
+DEFINE_stats(task_failure_error_type_total,
+             "Counts the number of task failure by the error type",
+             ("Type"),
+             (),
+             ray::stats::COUNT);
 }  // namespace stats
 
 }  // namespace ray
